@@ -34,6 +34,12 @@ function App() {
       status: "TO DO",
     },
   ]);
+
+  const setTask = (updatedTask) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+    );
+  };
   return (
     <>
       <div className="h-screen w-screen bg-blue-200 text-black font-poppins flex pb-10">
@@ -45,7 +51,7 @@ function App() {
                   (task) => task.status.toLowerCase() === colName.toLowerCase()
                 )
                 .map((task) => (
-                  <TaskCard key={task.id} task={task} />
+                  <TaskCard key={task.id} task={task} setTask={setTask} />
                 ))}
             </Column>
           ))}
