@@ -1,3 +1,5 @@
+import { useDroppable } from "@dnd-kit/core";
+
 // eslint-disable-next-line react/prop-types
 const Column = ({ name, children }) => {
   const getClassName = (name) => {
@@ -14,8 +16,14 @@ const Column = ({ name, children }) => {
       ? "bg-yellow-100"
       : "bg-green-100";
   };
+
+  const { setNodeRef } = useDroppable({
+    id: name, // Each column should be droppable
+  });
+
   return (
     <div
+      ref={setNodeRef}
       className={`w-[33.33%] min-h-full text-center my-6 font-semibold text-2xl bg-green-100 mx-4 rounded-xl shadow-3xl relative overflow-hidden ${getBgName(
         name
       )}`}

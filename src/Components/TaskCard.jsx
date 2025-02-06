@@ -1,20 +1,29 @@
+import { useDraggable } from "@dnd-kit/core";
+
 import trashit from "../assets/trashit.gif";
 import trash from "../assets/trash.png";
+
 import { useState } from "react";
 import PropTypes from "prop-types";
 
 // eslint-disable-next-line react/prop-types
 const TaskCard = ({ task, setTask }) => {
-  console.log("Rendering task: ", task);
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleTitleChange = (title) => {
     setTask({ ...task, title });
   };
+
+  const { attributes, listeners, setNodeRef } = useDraggable({
+    id: task.id.toString(), // Unique ID for each task
+  });
+
   return (
     <div
-      draggable
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
       className="z-20 flex flex-col items-center mb-4 cursor-pointer"
     >
       <div className="bg-white px-4 py-5 w-[92%] min-h-24 flex justify-between flex-col  gap-3 rounded-lg shadow-lg">
@@ -60,7 +69,8 @@ const TaskCard = ({ task, setTask }) => {
   );
 };
 TaskCard.propTypes = {
-  Task: PropTypes.shape({
+  task: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     title: PropTypes.string.isRequired,
     priority: PropTypes.string.isRequired,
     DueDate: PropTypes.string.isRequired,
